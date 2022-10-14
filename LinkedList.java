@@ -133,6 +133,28 @@ public class LinkedList<E> {
         curr = tail;
     }
 
+    /**
+     * The addtoFront method adds nodes to the beignind of the linked
+     * list
+     * 
+     * @param it
+     *            the element to insert into the front
+     */
+    public void addtoFront(E it) {
+        moveToStart();
+        insert(it);
+    }
+
+
+    /**
+     * The removelast method removes the last nodes
+     */
+    public void removelast() {
+        moveToEnd();
+        remove();
+    }
+
+
 
     /**
      * The prev method for the linked list
