@@ -1,8 +1,12 @@
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.NoSuchElementException;
 import student.TestCase;
 
-public class MaxHeapTest extends TestCase {
+public class MaxHeapTest extends student.TestCase {
 
-    public void testMinHeap() {
+    public void testMinHeap() throws NoSuchElementException, IOException {
 
         Integer[] vals = { 2, 7, 4, 9, 2, 1 };
 
