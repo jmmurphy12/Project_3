@@ -12,18 +12,23 @@ import java.util.NoSuchElementException;
 public class BufferPool {
     private String fileUsed;
     private LinkedList<Buffer> list;
-    private Record record;
-    private RandomAccessFile access;
+    // private Record record;
+    private RandomAccessFile accessone;
+    private int num;
+    private Buffer buff;
+
     /**
      * 
-     * @param filename
-     * @throws FileNotFoundException
+     * @param access
+     * @throws IOException
      */
-    public BufferPool(String filename) throws FileNotFoundException {
-        fileUsed = filename;
+    public BufferPool(RandomAccessFile access, int numberofbuff)
+        throws IOException {
         list = new LinkedList<Buffer>();
-        access = new RandomAccessFile(filename, "rw");
+        accessone = access;
+        num = numberofbuff;
     }
+
 
     /**
      * 
@@ -32,7 +37,7 @@ public class BufferPool {
      * @return
      * @throws IOException
      */
-    public Buffer getBufferAtOffset(String file, int offset)
+    public Buffer getBufferAtOffset(RandomAccessFile file, int offset)
         throws IOException {
         Buffer newBuffer = new Buffer(file, offset);
         return newBuffer;
@@ -41,23 +46,43 @@ public class BufferPool {
 
     /**
      * 
+     * if it doesn't have the record check if its max
+     * else insert the buffer into the buffer pool
+     * if the record equals the buffer
+     * 
      * @throws IOException
      * 
      */
-    public Buffer insert(Buffer buff) throws IOException {
-        // need to work on this
-        // check if the bpool is full
-        if (this.max()) {
-            // do flush if it is full
-            flush(fileUsed);
+    public boolean inserthelper() throws IOException {
+        Buffer champ = new Buffer(accessone, num);
+        boolean flag = false;
+        // check if the buffer is in the buffer pool
+        if (list.getValue().equals(champ)) {
+            return flag;
+        }
+        else if (this.max()) {
+            // if it flush does it insert;
+            flush();
         }
         else {
-            // insert to buffer to the bpool
-            list.insert(buff);
+            list.LRU(champ);
+            flag = true;
+
         }
-        return null;
+        return flag;
 
     }
+
+// /**
+// *
+// * @throws IOException
+// *
+// */
+// public boolean insert() throws IOException {
+// // false if it already in the buffer pool
+// // True if its we had to insert it
+// return false;
+// }
 
 
     /**
@@ -65,7 +90,7 @@ public class BufferPool {
      * @return
      */
     public boolean max() {
-        return list.length() == 20;
+        return list.length() == num;
     }
 
 
@@ -74,13 +99,41 @@ public class BufferPool {
      * @throws IOException
      * @throws NoSuchElementException
      */
-    public Record getRecord(int index)
-        throws NoSuchElementException,
-        IOException {
-        list.moveToPos(index);
-        return list.getValue().getRecord(index);
-        // this just calling the get record from the buffer class since the
-        // record value is inside the individual buffer array
+    public int getindexat(int index) {
+        for (int i = 0; i < list.length(); i++) {
+            int offset = list.getValue().getOffset();
+            if (index >= offset && index < offset + 1024) {
+                return i;
+            }
+            list.getNext();
+        }
+        return -1;
+    }
+
+
+    /**
+     * @return
+     * @throws IOException
+     * @throws NoSuchElementException
+     */
+    public Record getRecord(int indx) throws IOException {
+        int i = getindexat(indx);
+        if (i != -1) {
+            Record found = buff.getRecord(i);
+            return found;
+        }
+
+        return null;
+
+    }
+
+
+    /**
+     * 
+     */
+    public int getlength() {
+        return list.length();
+
     }
 
 
@@ -89,12 +142,24 @@ public class BufferPool {
      * @throws IOException
      * 
      */
-    public void flush(String file) throws IOException {
-        list.removelast();
+    public void flush() throws IOException {
+        // I need to work on this
         if (list.getValue().isdirty()) {
-            access.writeBytes(file);
+            list.getValue().flush();
+// inserthelper();
         }
         // write the byte back to the file if its dirty
+    }
+
+
+    /**
+     * @throws IOException
+     * 
+     */
+    public void flushall() throws IOException {
+        for (int i = 0; i < list.length(); i++) {
+            flush();
+        }
     }
 
 
@@ -105,9 +170,31 @@ public class BufferPool {
      *            The record that is passed to the method
      */
     public void setRecord(int index, Record rec) {
-        list.moveToPos(index);
-        list.getValue().setRecord(index, rec);
-        // this just calling the set record from the buffer class since the
-        // record value is inside the individual buffer array
+        // I need to work on this.
+        //
+        if (rec != null) {
+            int spotfound = this.getindexat(index);
+            list.getValue().setRecord(spotfound, rec);
+        }
+        // when record is not there
+        // dirty bit needs to be changed
     }
+
+
+    /**
+     * 
+     * @param pos1
+     * @param pos2
+     * @throws IOException
+     * @throws NoSuchElementException
+     */
+    public void swap(int pos1, int pos2)
+        throws NoSuchElementException,
+        IOException {
+        Record Temp = this.getRecord(pos1);
+        this.setRecord(pos1, Temp);
+        this.setRecord(pos2, Temp);
+
+    }
+
 }
