@@ -1,6 +1,12 @@
+
 import student.TestCase;
 
-public class RecordTest extends TestCase {
+/**
+ * 
+ * @author amado
+ *
+ */
+public class RecordTest extends student.TestCase {
 
     Record r;
     Record r2;

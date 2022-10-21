@@ -67,6 +67,26 @@ public class LinkedList<E> {
 
 
     /**
+     * The insert method for the linked list
+     * 
+     * @param it
+     *            the element to insert
+     * @return a boolean depending on the insert value
+     * 
+     */
+    public boolean search(E it) {
+        moveToStart();
+        boolean flag = false;
+        while ((curr != null) && (it != null)) {
+            if (this.getValue() == it) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+
+    /**
      * The getter head method for the linked list
      * 
      * @return the head
@@ -133,6 +153,7 @@ public class LinkedList<E> {
         curr = tail;
     }
 
+
     /**
      * The addtoFront method adds nodes to the beignind of the linked
      * list
@@ -147,6 +168,19 @@ public class LinkedList<E> {
 
 
     /**
+     * 
+     */
+    public void LRU(E element) {
+        // might make infinite loop
+        if (element != null) {
+            remove();
+            addtoFront(element);
+        }
+
+    }
+
+
+    /**
      * The removelast method removes the last nodes
      */
     public void removelast() {
@@ -155,6 +189,9 @@ public class LinkedList<E> {
     }
 
 
+    /**
+     * 
+     */
 
     /**
      * The prev method for the linked list

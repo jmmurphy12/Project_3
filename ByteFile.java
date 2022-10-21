@@ -1,3 +1,4 @@
+
 /**
  * Basic handling of binary data files.
  * Uses a single byte array as a buffer for disc operations
@@ -63,7 +64,7 @@ public class ByteFile {
         }
         return true;
     }
-    
+   
     
     // creates a file of randomly generated records
     public void writeRandomRecords() throws IOException {

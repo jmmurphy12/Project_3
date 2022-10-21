@@ -23,20 +23,33 @@ public class HeapSort {
     public static void main(String[] args) throws Exception {
         String fileone = args[0];
         // -------------------------------------
-// String numberbuffer = args[1];
+        int numberbuffer = Integer.valueOf(args[1]);
 // String stats = args[2];
 // ------------------------------------
         File file = new File(fileone);
         RandomAccessFile access = new RandomAccessFile(file, "rw");
-        try {
-            access.read();
+        int numRecords = (int)(file.length()/4);
+        BufferPool bp = new BufferPool(access, numberbuffer);
+        MaxHeap max = new MaxHeap(bp, numRecords, numberbuffer);
+        // access.read();
+        bp.flushall();
+        for (int idex = 0; idex < numRecords / 1024; idex++) {
+            //get first record out of block and print shit
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        BufferPool bp = new BufferPool(fileone);
-        MaxHeap max = new MaxHeap(args, 0, 0);
         access.close();
+
+    }
+
+
+    /**
+     * This is the entry point of the application
+     * 
+     * @param args
+     *            Command line arguments
+     * @throws Exception
+     */
+    public static void sort(String args) throws Exception {
+// "%5d %5d\t",\
 
     }
 }
