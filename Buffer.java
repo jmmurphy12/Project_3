@@ -1,17 +1,15 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-// import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
 
+/**
+ * 
+ * @author amado
+ *
+ */
 public class Buffer {
     private byte[] basicBuffer;
     private boolean dirtybit;
-    public Record rec;
-    public Buffer bpool;
-    public LinkedList<Buffer> list;
-    private RandomAccessFile accesson;
+    private RandomAccessFile access;
     private int index;
 
     /**
@@ -20,13 +18,15 @@ public class Buffer {
      * @param offset
      * @throws IOException
      */
-    public Buffer(RandomAccessFile access, int startindex) throws IOException {
-        accesson = access;
+    public Buffer(RandomAccessFile file, int startindex) throws IOException {
+        basicBuffer = new byte[4096];
+        access = file;
         index = startindex;
         access.seek(startindex);
         access.read(basicBuffer, 0, 4096);
         dirtybit = false;
     }
+
 
     /**
      * 
@@ -41,6 +41,8 @@ public class Buffer {
         }
         return new Record(byteon);
     }
+
+
     /**
      * 
      */
@@ -49,7 +51,7 @@ public class Buffer {
             byte[] BytesSet = rectwo.getBytes();
             basicBuffer[(sindex * 4) + i] = BytesSet[i];
         }
-       
+
         dirtybit = true;
     }
 
@@ -61,8 +63,8 @@ public class Buffer {
      */
     public void flush() throws IOException {
         if (isdirty()) {
-            accesson.seek(index);
-            accesson.write(basicBuffer);
+            access.seek(index);
+            access.write(basicBuffer);
         }
         dirtybit = false;
     }
@@ -82,7 +84,7 @@ public class Buffer {
      * @return
      */
     public byte[] toBuffarray() {
-        return basicBuffer;
+        return this.basicBuffer;
     }
 
 

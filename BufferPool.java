@@ -10,12 +10,12 @@ import java.util.NoSuchElementException;
  *
  */
 public class BufferPool {
-    private String fileUsed;
+// private Buffer buff;
     private LinkedList<Buffer> list;
-    // private Record record;
-    private RandomAccessFile accessone;
+    private RandomAccessFile accessbp;
     private int num;
-    private Buffer buff;
+// private int cachehits;
+// private int cachemisses;
 
     /**
      * 
@@ -25,7 +25,7 @@ public class BufferPool {
     public BufferPool(RandomAccessFile access, int numberofbuff)
         throws IOException {
         list = new LinkedList<Buffer>();
-        accessone = access;
+        accessbp = access;
         num = numberofbuff;
     }
 
@@ -53,36 +53,27 @@ public class BufferPool {
      * @throws IOException
      * 
      */
-    public boolean inserthelper() throws IOException {
-        Buffer champ = new Buffer(accessone, num);
+    public boolean insert() throws IOException {
+        Buffer champ = new Buffer(accessbp, num);
         boolean flag = false;
         // check if the buffer is in the buffer pool
         if (list.getValue().equals(champ)) {
             return flag;
         }
         else if (this.max()) {
-            // if it flush does it insert;
+            // what do we do when its a max
             flush();
+            num--;
         }
         else {
-            list.LRU(champ);
+            list.insert(champ);
+            num++;
             flag = true;
 
         }
         return flag;
 
     }
-
-// /**
-// *
-// * @throws IOException
-// *
-// */
-// public boolean insert() throws IOException {
-// // false if it already in the buffer pool
-// // True if its we had to insert it
-// return false;
-// }
 
 
     /**
@@ -119,7 +110,7 @@ public class BufferPool {
     public Record getRecord(int indx) throws IOException {
         int i = getindexat(indx);
         if (i != -1) {
-            Record found = buff.getRecord(i);
+            Record found = list.getValue().getRecord(i);
             return found;
         }
 
@@ -143,12 +134,9 @@ public class BufferPool {
      * 
      */
     public void flush() throws IOException {
-        // I need to work on this
         if (list.getValue().isdirty()) {
             list.getValue().flush();
-// inserthelper();
         }
-        // write the byte back to the file if its dirty
     }
 
 
@@ -169,15 +157,11 @@ public class BufferPool {
      * @param rec
      *            The record that is passed to the method
      */
-    public void setRecord(int index, Record rec) {
-        // I need to work on this.
-        //
-        if (rec != null) {
-            int spotfound = this.getindexat(index);
-            list.getValue().setRecord(spotfound, rec);
+    public void setRecord(int sindex, Record record) {
+        if (record != null) {
+            int spotfound = this.getindexat(sindex);
+            list.getValue().setRecord(spotfound, record);
         }
-        // when record is not there
-        // dirty bit needs to be changed
     }
 
 

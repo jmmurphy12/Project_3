@@ -27,7 +27,7 @@ public class HeapSortTest extends TestCase {
                 + "19089 21764 19746  1020 20356 16572 20936 22694 21517 32059 22104 26860 22713 22635 23333 28688 \r\n"
                 + "23954   851 24536 12118 25152  6553 25759  9295 26344 29246 26987 26925 27608  2460 28180 31338 \r\n"
                 + "28774  6278 29397 12728 \r\n" + "";
-        String[] file = new String[] { "sampleblock.bin" };// it's the same as
+        String[] file = new String[] { "sampleblock.bin", "20", "sampleoutput" };// it's the same as
                                                            // sample50bin
         HeapSort.main(file);
         PrintStreamWithHistory out = systemOut();

@@ -11,7 +11,6 @@ import java.io.RandomAccessFile;
  * @author {your PID}
  */
 public class HeapSort {
-
     /**
      * This is the entry point of the application
      * 
@@ -28,15 +27,16 @@ public class HeapSort {
 // ------------------------------------
         File file = new File(fileone);
         RandomAccessFile access = new RandomAccessFile(file, "rw");
-        int numRecords = (int)(file.length()/4);
+        int numRecords = (int)(file.length() / 4);
         BufferPool bp = new BufferPool(access, numberbuffer);
         MaxHeap max = new MaxHeap(bp, numRecords, numberbuffer);
         // access.read();
         bp.flushall();
         for (int idex = 0; idex < numRecords / 1024; idex++) {
-            //get first record out of block and print shit
+            // get first record out of block and print shit
         }
         access.close();
+        
 
     }
 

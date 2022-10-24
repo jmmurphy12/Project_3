@@ -1,10 +1,10 @@
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.NoSuchElementException;
 
 /**
- * Tests the linkedlist class
  * 
  * @author amado
- * @version 10.22.2022
  *
  */
 public class LinkedListTest extends student.TestCase {
@@ -252,47 +252,6 @@ public class LinkedListTest extends student.TestCase {
         assertFalse(list.isEmpty());
         LinkedList<String> sectester = new LinkedList<String>();
         assertTrue(sectester.isEmpty());
-    }
-
-
-    /**
-     * test the isSame method
-     */
-    public void testisSame() {
-        list = new LinkedList<String>();
-        String name = "hi and amado";
-        String name2 = "amado";
-        list.insert(name);
-        list.insert(name2);
-        assertEquals(1, list.isSame());
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        assertEquals(5, list.isSame());
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name2);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name2);
-        list.insert(name2);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name2);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        list.insert(name);
-        assertEquals(21, list.isSame());
-        assertEquals(26, list.length());
-
     }
 
 }

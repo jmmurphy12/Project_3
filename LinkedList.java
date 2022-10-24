@@ -65,25 +65,26 @@ public class LinkedList<E> {
         return true;
     }
 
-
-    /**
-     * The insert method for the linked list
-     * 
-     * @param it
-     *            the element to insert
-     * @return a boolean depending on the insert value
-     * 
-     */
-    public boolean search(E it) {
-        moveToStart();
-        boolean flag = false;
-        while ((curr != null) && (it != null)) {
-            if (this.getValue() == it) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
+//
+// /**
+// * The insert method for the linked list
+// *
+// * @param it
+// * the element to insert
+// * @return a boolean depending on the insert value
+// *
+// */
+// public boolean search(E it) {
+// moveToStart();
+// boolean flag = false;
+// while ((curr != null) && (it != null)) {
+// if (this.getValue() == it) {
+// flag = true;
+// }
+// }
+// return flag;
+// }
+//
 
 
     /**
@@ -283,38 +284,6 @@ public class LinkedList<E> {
      */
     public boolean isAtEnd() {
         return curr == tail;
-    }
-
-
-    /**
-     * The isSame method
-     * 
-     * @return the duplicates
-     */
-    public int isSame() {
-        this.moveToStart();
-        Link<E> node = head.next();
-        int maxDup = 0;
-        int counter = 1;
-        Link<E> nextnode = head.next().next();
-
-        for (int i = 0; i < this.length(); i++) {
-            while (nextnode.next() != null) {
-                E thing = node.element();
-                E thing2 = nextnode.element();
-                if (thing.toString().equals(thing2.toString())) {
-                    counter++;
-                }
-
-                nextnode = nextnode.next();
-            }
-            if (counter > maxDup) {
-                maxDup = counter;
-            }
-            node = node.next();
-        }
-
-        return maxDup;
     }
 
 
