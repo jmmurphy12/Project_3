@@ -22,9 +22,9 @@ public class Record implements Comparable<Record> {
     public byte[] getBytes() {
         byte[] bytes = new byte[4];
         for (int idex = 0; idex < 4; idex++) {
-           bytes[idex] = bb.get(idex);
+            bytes[idex] = bb.get(idex);
         }
-        
+
         return bytes;
     }
 

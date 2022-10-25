@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -133,7 +132,7 @@ public class MaxHeap {
             if (!isGreaterThan(child, pos)) {
                 return; // stop early
             }
-            bpool.swap(pos, child);
+            swap(pos, child);
             pos = child; // keep sifting down
         }
     }
@@ -153,7 +152,7 @@ public class MaxHeap {
             if (isGreaterThan(parent, pos)) {
                 return; // stop early
             }
-            bpool.swap(pos, parent);
+            swap(pos, parent);
             pos = parent; // keep sifting up
         }
     }
@@ -170,10 +169,10 @@ public class MaxHeap {
         assert n > 0 : "Heap is empty; cannot remove";
         n--;
         if (n > 0) {
-            bpool.swap(0, n); // Swap maximum with last value
+            swap(0, n); // Swap maximum with last value
             siftDown(0); // Put new heap root val in correct place
         }
-        return bpool.getRecord(n);
+        return bpool.getBpRecord(n);
     }
 
 
@@ -186,7 +185,7 @@ public class MaxHeap {
      * @throws IOException
      */
     private boolean isGreaterThan(int pos1, int pos2) throws IOException {
-        return bpool.getRecord(pos1).compareTo(bpool.getRecord(pos2)) > 0;
+        return bpool.getBpRecord(pos1).compareTo(bpool.getBpRecord(pos2)) > 0;
     }
 
 
@@ -204,6 +203,24 @@ public class MaxHeap {
         while (n > 0) {
             themax.removeMax();
         }
+
+    }
+
+
+    /**
+     * 
+     * @param pos1
+     * @param pos2
+     * @throws IOException
+     * @throws NoSuchElementException
+     */
+    public void swap(int pos1, int pos2)
+        throws NoSuchElementException,
+        IOException {
+        Record Temp = bpool.getBpRecord(pos1);
+        Record Temp1 = bpool.getBpRecord(pos2);
+        bpool.setRecord(pos1, Temp1);
+        bpool.setRecord(pos2, Temp);
 
     }
 

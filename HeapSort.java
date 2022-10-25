@@ -22,9 +22,11 @@ public class HeapSort {
     public static void main(String[] args) throws Exception {
         String fileone = args[0];
         // -------------------------------------
+        
         int numberbuffer = Integer.valueOf(args[1]);
-// String stats = args[2];
-// ------------------------------------
+        String stats = args[2];
+        
+        // ------------------------------------
         File file = new File(fileone);
         RandomAccessFile access = new RandomAccessFile(file, "rw");
         int numRecords = (int)(file.length() / 4);
@@ -36,7 +38,6 @@ public class HeapSort {
             // get first record out of block and print shit
         }
         access.close();
-        
 
     }
 

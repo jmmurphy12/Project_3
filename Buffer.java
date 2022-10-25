@@ -10,7 +10,8 @@ public class Buffer {
     private byte[] basicBuffer;
     private boolean dirtybit;
     private RandomAccessFile access;
-    private int index;
+    private int offset;
+    private Record[] records;
 
     /**
      * 
@@ -18,13 +19,29 @@ public class Buffer {
      * @param offset
      * @throws IOException
      */
-    public Buffer(RandomAccessFile file, int startindex) throws IOException {
+    public Buffer(RandomAccessFile file, int offsetVal) throws IOException {
         basicBuffer = new byte[4096];
         access = file;
-        index = startindex;
-        access.seek(startindex);
-        access.read(basicBuffer, 0, 4096);
+        offset = offsetVal;
+        access.seek(offsetVal * 4096);
+        access.read(basicBuffer);
+        records = setRecordArray();
         dirtybit = false;
+    }
+
+
+    public Record[] setRecordArray() {
+        return Record.toRecArray(basicBuffer);
+    }
+
+
+    public boolean inBuffer(int index) {
+        if (index / 1024 == offset) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -34,25 +51,14 @@ public class Buffer {
      * @throws IOException
      */
     public Record getRecord(int index) throws IOException {
-        index = index * 4;
-        byte[] byteon = new byte[4];
-        for (int i = index; i < index + 4; i++) {
-            byteon[i - index] = basicBuffer[i];
+        if (inBuffer(index)) {
+            int bufferIndex = index % 1024;
+            return records[bufferIndex];
         }
-        return new Record(byteon);
-    }
-
-
-    /**
-     * 
-     */
-    public void setRecord(int sindex, Record rectwo) {
-        for (int i = index; i < index + 4; i++) {
-            byte[] BytesSet = rectwo.getBytes();
-            basicBuffer[(sindex * 4) + i] = BytesSet[i];
+        else {
+            return null;
         }
 
-        dirtybit = true;
     }
 
 
@@ -63,7 +69,7 @@ public class Buffer {
      */
     public void flush() throws IOException {
         if (isdirty()) {
-            access.seek(index);
+            access.seek(offset);
             access.write(basicBuffer);
         }
         dirtybit = false;
@@ -76,6 +82,11 @@ public class Buffer {
      */
     public boolean isdirty() {
         return dirtybit;
+    }
+    
+    
+    public void setBytes() {
+        
     }
 
 
@@ -93,7 +104,7 @@ public class Buffer {
      * @return
      */
     public int getOffset() {
-        return index;
+        return offset;
     }
 
 }

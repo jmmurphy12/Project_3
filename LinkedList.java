@@ -169,24 +169,11 @@ public class LinkedList<E> {
 
 
     /**
-     * 
-     */
-    public void LRU(E element) {
-        // might make infinite loop
-        if (element != null) {
-            remove();
-            addtoFront(element);
-        }
-
-    }
-
-
-    /**
      * The removelast method removes the last nodes
      */
-    public void removelast() {
-        moveToEnd();
-        remove();
+    public E removelast() {
+        moveToPos(listSize - 1);
+        return remove();
     }
 
 
@@ -208,6 +195,23 @@ public class LinkedList<E> {
             temp = temp.next();
         }
         curr = temp;
+    }
+
+
+    /**
+     * 
+     */
+    public void LRU(E element) {
+        moveToStart();
+        while (curr != null) {
+            if (curr.element().equals(element)) {
+                remove();
+                addtoFront(element);
+                return;
+            }
+            next();
+        }
+
     }
 
 

@@ -13,7 +13,7 @@ public class BufferPool {
 // private Buffer buff;
     private LinkedList<Buffer> list;
     private RandomAccessFile accessbp;
-    private int num;
+    static private int NUM;
 // private int cachehits;
 // private int cachemisses;
 
@@ -26,7 +26,7 @@ public class BufferPool {
         throws IOException {
         list = new LinkedList<Buffer>();
         accessbp = access;
-        num = numberofbuff;
+        NUM = numberofbuff;
     }
 
 
@@ -37,7 +37,7 @@ public class BufferPool {
      * @return
      * @throws IOException
      */
-    public Buffer getBufferAtOffset(RandomAccessFile file, int offset)
+    public Buffer getNewBufferAtOffset(RandomAccessFile file, int offset)
         throws IOException {
         Buffer newBuffer = new Buffer(file, offset);
         return newBuffer;
@@ -53,52 +53,24 @@ public class BufferPool {
      * @throws IOException
      * 
      */
-    public boolean insert() throws IOException {
-        Buffer champ = new Buffer(accessbp, num);
-        boolean flag = false;
-        // check if the buffer is in the buffer pool
-        if (list.getValue().equals(champ)) {
-            return flag;
-        }
-        else if (this.max()) {
-            // what do we do when its a max
-            flush();
-            num--;
+    public void insert(Buffer b) throws IOException {
+        if (list.length() < NUM) {
+            list.addtoFront(b);
         }
         else {
-            list.insert(champ);
-            num++;
-            flag = true;
-
+            flush();
+            list.addtoFront(b);
         }
-        return flag;
-
     }
 
 
-    /**
-     * 
-     * @return
-     */
-    public boolean max() {
-        return list.length() == num;
-    }
-
-
-    /**
-     * @return
-     * @throws IOException
-     * @throws NoSuchElementException
-     */
-    public int getindexat(int index) {
+    public Buffer getBufferAtOffset(int offset) {
         for (int i = 0; i < list.length(); i++) {
-            int offset = list.getValue().getOffset();
-            if (index >= offset && index < offset + 1024) {
-                return i;
+            if (list.getValue().getOffset() == offset) {
+                return list.getValue();
             }
-            list.getNext();
         }
-        return -1;
+        return null;
     }
 
 
@@ -107,15 +79,17 @@ public class BufferPool {
      * @throws IOException
      * @throws NoSuchElementException
      */
-    public Record getRecord(int indx) throws IOException {
-        int i = getindexat(indx);
-        if (i != -1) {
-            Record found = list.getValue().getRecord(i);
-            return found;
+    public Record getBpRecord(int indx) throws IOException {
+        int offsetValue = indx / 1024;
+
+        if (null == getBufferAtOffset(offsetValue)) {
+            insert(getNewBufferAtOffset(accessbp, offsetValue));
+            return getBufferAtOffset(offsetValue).getRecord(indx);
         }
-
-        return null;
-
+        else {
+            list.LRU(getBufferAtOffset(offsetValue));
+            return getBufferAtOffset(offsetValue).getRecord(indx);
+        }
     }
 
 
@@ -134,9 +108,8 @@ public class BufferPool {
      * 
      */
     public void flush() throws IOException {
-        if (list.getValue().isdirty()) {
-            list.getValue().flush();
-        }
+        Buffer flushedBuffer = list.removelast();
+        flushedBuffer.flush();
     }
 
 
@@ -156,28 +129,22 @@ public class BufferPool {
      * 
      * @param rec
      *            The record that is passed to the method
-     */
-    public void setRecord(int sindex, Record record) {
-        if (record != null) {
-            int spotfound = this.getindexat(sindex);
-            list.getValue().setRecord(spotfound, record);
-        }
-    }
-
-
-    /**
-     * 
-     * @param pos1
-     * @param pos2
      * @throws IOException
-     * @throws NoSuchElementException
      */
-    public void swap(int pos1, int pos2)
-        throws NoSuchElementException,
-        IOException {
-        Record Temp = this.getRecord(pos1);
-        this.setRecord(pos1, Temp);
-        this.setRecord(pos2, Temp);
+    public void setRecord(int index, Record record) throws IOException {
+        int offsetValue = index / 1024;
+
+        if (null == getBufferAtOffset(offsetValue)) {
+            insert(getNewBufferAtOffset(accessbp, offsetValue));
+            getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
+            list.LRU(getBufferAtOffset(offsetValue));
+            getBufferAtOffset(offsetValue).isdirty();
+        }
+        else {
+            getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
+            list.LRU(getBufferAtOffset(offsetValue));
+            getBufferAtOffset(offsetValue).isdirty();
+        }
 
     }
 
