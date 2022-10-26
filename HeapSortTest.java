@@ -1,10 +1,23 @@
 import java.io.EOFException;
+
 import java.io.FileNotFoundException;
 import org.junit.Test;
 import student.TestCase;
 import student.testingsupport.PrintStreamWithHistory;
 
 public class HeapSortTest extends TestCase {
+    private String[] file;
+    private ByteFile bF;
+
+    /**
+     * 
+     */
+    public void setUp() {
+        bF = new ByteFile("sampleBlock1.bin", 1);
+        file = new String[] { "sampleBlock1.bin", "1", "sampleoutput" };
+
+    }
+
 
     /**
      * An artificial test to get initial coverage for the
@@ -13,25 +26,33 @@ public class HeapSortTest extends TestCase {
      * @throws Exception
      */
     @Test
-    public void testMain() throws Exception {
-// HeapSort dum = new HeapSort();
-// assertNotNull(dum);
-// HeapSort.main(new String[3]);
-// assertEquals(systemOut().getHistory(), "");
-// ---------------Test the parse----------------
-        String goingout =
-            "    0 13264    568 13206  1191 16924  1785 13287  2394 12538  2973  2674  3588 14607  4183 23785 \r\n"
-                + " 4802  3929  5383 30882  6005 12806  6570 27904  7198 31848  7790  9280  8386 24415  8976 15579 \r\n"
-                + " 9558 17099 10136 27774 10764 28524 11370 30380 11964  9504 12579 22807 13169 22042 13765 29036 \r\n"
-                + "14333 22993 14946 26109 15549 22916 16133  8486 16711  8421 17306 29845 17904 24085 18511  4107 \r\n"
-                + "19089 21764 19746  1020 20356 16572 20936 22694 21517 32059 22104 26860 22713 22635 23333 28688 \r\n"
-                + "23954   851 24536 12118 25152  6553 25759  9295 26344 29246 26987 26925 27608  2460 28180 31338 \r\n"
-                + "28774  6278 29397 12728 \r\n" + "";
-        String[] file = new String[] { "sampleBlock50.bin", "20", "sampleoutput" };// it's the same as
-                                                           // sample50bin
-        HeapSort.main(file);
+    public void testMain() {
+        String goingout = " 17 14365 ";
+        try {
+            HeapSort.main(file);
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         PrintStreamWithHistory out = systemOut();
         assertEquals(goingout, out.getHistory());
+
+    }
+
+
+    /**
+     * Test the main
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testsimple() throws Exception {
+        String[] file = new String[] { "sampleBlock1.bin", "1",
+            "sampleoutput" };
+        HeapSort.main(file);
+        ByteFile bF = new ByteFile("sampleBlock1.bin", 1);
+        assertTrue(bF.isSorted());
 
     }
 
