@@ -81,15 +81,6 @@ public class BufferpoolTest extends TestCase {
 
 
     /**
-     * test the flush method
-     * 
-     */
-    public void testflush() {
-        
-    }
-
-
-    /**
      * Test the setRecord method
      * 
      * @throws IOException
@@ -100,6 +91,36 @@ public class BufferpoolTest extends TestCase {
         Record record = new Record(5, 5);
         bpool.setRecord(2, record);
         assertEquals(bpool.getBpRecord(2).toString(), record.toString());
+        
+        Record record1 = new Record(70, 35);
+        bpool.setRecord(2000, record1);
+        assertEquals(bpool.getBpRecord(2000).toString(), record1.toString());
+        
+        Record record2 = new Record(74, 38);
+        bpool.setRecord(2000, record2);
+        assertEquals(bpool.getBpRecord(2000).toString(), record2.toString());
     }
+    
+    
+    public void testFlushAll() throws IOException {
+        Buffer buffer = new Buffer(access, 0);
+        bpool.insert(buffer);
+       
+        Buffer buffer1 = new Buffer(access, 1);
+        bpool.insert(buffer1);
+        
+        Buffer buffer2 = new Buffer(access, 2);
+        bpool.insert(buffer2);
+        
+        Buffer buffer3 = new Buffer(access, 3);
+        bpool.insert(buffer3);
+        
+        bpool.flushall();
+        
+        assertEquals(0, bpool.getlength());
+    }
+    
+    
+    
 
 }

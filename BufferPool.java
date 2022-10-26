@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * @author amado
  *
  */
-public class BufferPool {
+public class BufferPool implements BpInterface {
 // private Buffer buff;
     private LinkedList<Buffer> list;
     private RandomAccessFile accessbp;
@@ -66,7 +66,7 @@ public class BufferPool {
 
     public Buffer getBufferAtOffset(int offset) {
         for (int i = 0; i < list.length(); i++) {
-            if (list.getValue().getOffset() == offset) {
+            if (list.getValue().getBlockNum() == offset) {
                 return list.getValue();
             }
         }
@@ -118,7 +118,7 @@ public class BufferPool {
      * 
      */
     public void flushall() throws IOException {
-        for (int i = 0; i < list.length(); i++) {
+        while (list.length() > 0) {
             flush();
         }
     }
@@ -136,15 +136,12 @@ public class BufferPool {
 
         if (null == getBufferAtOffset(offsetValue)) {
             insert(getNewBufferAtOffset(accessbp, offsetValue));
-            getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
-            list.LRU(getBufferAtOffset(offsetValue));
-            getBufferAtOffset(offsetValue).isdirty();
         }
-        else {
-            getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
-            list.LRU(getBufferAtOffset(offsetValue));
-            getBufferAtOffset(offsetValue).isdirty();
-        }
+        
+        getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
+        getBufferAtOffset(offsetValue).setBytes(index, record);
+        list.LRU(getBufferAtOffset(offsetValue));
+        getBufferAtOffset(offsetValue).isdirty();
 
     }
 

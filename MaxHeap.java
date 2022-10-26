@@ -12,10 +12,10 @@ import java.util.NoSuchElementException;
  * @author amado
  *
  */
-public class MaxHeap {
+public class MaxHeap{
     private int capacity; // Maximum size of the heap
     private int n; // Number of things currently in heap
-    private BufferPool bpool;
+    private BpInterface bpool;
 
     // Constructor supporting preloading of heap contents
     /**
@@ -26,11 +26,11 @@ public class MaxHeap {
      * @throws IOException
      * @throws NoSuchElementException
      */
-    public MaxHeap(BufferPool pool, int heapSize, int capacity)
+    public MaxHeap(BpInterface pool, int heapSize, int capacity)
         throws NoSuchElementException,
         IOException {
-        assert capacity <= pool.getlength() : "capacity is beyond array limits";
-        assert heapSize <= capacity : "Heap size is beyond max";
+//        assert capacity <= pool.getlength() : "capacity is beyond array limits";
+//        assert heapSize <= capacity : "Heap size is beyond max";
         bpool = pool;
         n = heapSize;
         this.capacity = capacity;
@@ -198,10 +198,8 @@ public class MaxHeap {
      * @throws NoSuchElementException
      */
     public void Sort() throws NoSuchElementException, IOException {
-        // capacity might be wrong
-        MaxHeap themax = new MaxHeap(bpool, capacity, capacity);
-        while (n > 0) {
-            themax.removeMax();
+        for (int idex = 0; idex < capacity; idex++) {
+            removeMax();
         }
 
     }

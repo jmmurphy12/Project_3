@@ -10,7 +10,7 @@ public class Buffer {
     private byte[] basicBuffer;
     private boolean dirtybit;
     private RandomAccessFile access;
-    private int offset;
+    private int blockNum;
     private Record[] records;
 
     /**
@@ -22,11 +22,21 @@ public class Buffer {
     public Buffer(RandomAccessFile file, int offsetVal) throws IOException {
         basicBuffer = new byte[4096];
         access = file;
-        offset = offsetVal;
+        blockNum = offsetVal;
         access.seek(offsetVal * 4096);
         access.read(basicBuffer);
         records = setRecordArray();
         dirtybit = false;
+    }
+    
+    
+    public void setBytes(int index, Record rec) {
+        int inBuffIndex = index % 1024;
+        byte[] b = rec.getBytes();
+        
+        for (int idex = 0; idex < 4; idex++) {
+            basicBuffer[inBuffIndex] = b[idex];
+        }
     }
 
 
@@ -36,7 +46,7 @@ public class Buffer {
 
 
     public boolean inBuffer(int index) {
-        if (index / 1024 == offset) {
+        if (index / 1024 == blockNum) {
             return true;
         }
         else {
@@ -69,7 +79,7 @@ public class Buffer {
      */
     public void flush() throws IOException {
         if (isdirty()) {
-            access.seek(offset);
+            access.seek(blockNum * 4096);
             access.write(basicBuffer);
         }
         dirtybit = false;
@@ -82,11 +92,6 @@ public class Buffer {
      */
     public boolean isdirty() {
         return dirtybit;
-    }
-    
-    
-    public void setBytes() {
-        
     }
 
 
@@ -103,8 +108,8 @@ public class Buffer {
      * 
      * @return
      */
-    public int getOffset() {
-        return offset;
+    public int getBlockNum() {
+        return blockNum;
     }
 
 }
