@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.NoSuchElementException;
@@ -65,10 +63,12 @@ public class BufferPool implements BpInterface {
 
 
     public Buffer getBufferAtOffset(int offset) {
+        list.moveToStart();
         for (int i = 0; i < list.length(); i++) {
             if (list.getValue().getBlockNum() == offset) {
                 return list.getValue();
             }
+            list.next();
         }
         return null;
     }
@@ -84,12 +84,10 @@ public class BufferPool implements BpInterface {
 
         if (null == getBufferAtOffset(offsetValue)) {
             insert(getNewBufferAtOffset(accessbp, offsetValue));
-            return getBufferAtOffset(offsetValue).getRecord(indx);
         }
-        else {
-            list.LRU(getBufferAtOffset(offsetValue));
-            return getBufferAtOffset(offsetValue).getRecord(indx);
-        }
+        
+        list.LRU(getBufferAtOffset(offsetValue));
+        return getBufferAtOffset(offsetValue).getRecord(indx);
     }
 
 
@@ -118,6 +116,7 @@ public class BufferPool implements BpInterface {
      * 
      */
     public void flushall() throws IOException {
+        list.moveToStart();
         while (list.length() > 0) {
             flush();
         }
@@ -137,11 +136,10 @@ public class BufferPool implements BpInterface {
         if (null == getBufferAtOffset(offsetValue)) {
             insert(getNewBufferAtOffset(accessbp, offsetValue));
         }
-        
+
         getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
-        getBufferAtOffset(offsetValue).setBytes(index, record);
         list.LRU(getBufferAtOffset(offsetValue));
-        getBufferAtOffset(offsetValue).isdirty();
+        getBufferAtOffset(offsetValue).makeDirty();
 
     }
 

@@ -1,10 +1,8 @@
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 import student.TestCase;
 
 public class MaxHeapTest extends student.TestCase {
@@ -17,6 +15,7 @@ public class MaxHeapTest extends student.TestCase {
     private MaxHeap testRealHeap;
 
     public void setUp() throws NoSuchElementException, IOException {
+        
         fakeBuf = new ImBufferPool(5);
         
         Record r1 = new Record(1, 1);
@@ -33,9 +32,9 @@ public class MaxHeapTest extends student.TestCase {
         
         testFakeHeap = new MaxHeap(fakeBuf, 5, 5);
         
-        byteF = new ByteFile("sampleBlock1.bin", 10);
+        byteF = new ByteFile("sample.bin", 10);
         byteF.writeRandomRecords();
-        d = new RandomAccessFile("sampleBlock1.bin", "rw");
+        d = new RandomAccessFile("sample.bin", "rw");
         fileLength = (int)(d.length() / 4);
         rBuff = new BufferPool(d, 3);
         
@@ -50,6 +49,34 @@ public class MaxHeapTest extends student.TestCase {
         System.out.println(fakeBuf.toString());
         testFakeHeap.Sort();
         System.out.println(fakeBuf.toString());
+        MaxHeap testHeap = new MaxHeap(fakeBuf, 5, 5);
+        System.out.println(fakeBuf.toString());
+        testHeap.Sort();
+        System.out.println(fakeBuf.toString());
+        
+    }
+    
+    
+    public void testFakeHeap2() throws NoSuchElementException, IOException {
+        Record tr1 = new Record(8985, 26660);
+        Record tr2 = new Record(21847, 25879);
+        Record tr3 = new Record(24254, 26046);
+        Record tr4 = new Record(24434, 27546);
+        Record tr5 = new Record(19978, 14888);
+        
+        ImBufferPool fakeBuf1 = new ImBufferPool(5);
+        
+        fakeBuf1.setRecord(1, tr2);
+        fakeBuf1.setRecord(4, tr5);
+        fakeBuf1.setRecord(2, tr3);
+        fakeBuf1.setRecord(3, tr4);
+        fakeBuf1.setRecord(0, tr1);
+        
+        System.out.println(fakeBuf1.toString());
+        testFakeHeap.buildHeap();
+        System.out.println(fakeBuf1.toString());
+        testFakeHeap.Sort();
+        System.out.println(fakeBuf1.toString());
         
     }
     
@@ -59,6 +86,25 @@ public class MaxHeapTest extends student.TestCase {
         testRealHeap.Sort();
         rBuff.flushall();
         assertTrue(byteF.isSorted());
+        
+    }
+    
+    
+    public void testRealHeap3() throws IOException {
+//        ByteFile bf = new ByteFile("sample.bin", 10);
+//        bf.writeRandomRecords();
+//        File copy_3 = new File("copy_3");
+//        /
+//        RandomAccessFile disk = new RandomAccessFile("sampleBlock3.bin", "rw");
+//        int fl = (int)(d.length() / 4);
+//        BufferPool rB = new BufferPool(disk, 3);
+//        
+//        testRealHeap = new MaxHeap(rB, fl, fl);
+//        
+//        testRealHeap.buildHeap();
+//        testRealHeap.Sort();
+//        rB.flushall();
+//        assertTrue(bf.isSorted());
     }
 
 }

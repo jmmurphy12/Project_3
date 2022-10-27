@@ -14,10 +14,19 @@ public class BufferpoolTest extends TestCase {
     private BufferPool bpool;
 
     public void setUp() throws IOException {
-        file = new ByteFile("sample", 3);
+        file = new ByteFile("sampleblock1", 3);
         file.writeRandomRecords();
-        access = new RandomAccessFile("sample", "rw");
+        access = new RandomAccessFile("sampleblock1.bin", "rw");
         bpool = new BufferPool(access, 3);
+    }
+
+
+    public void testCorrectInput() throws IOException {
+//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(0));
+//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(1));
+//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(2));
+//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(3));
+//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(4));
     }
 
 
@@ -39,6 +48,28 @@ public class BufferpoolTest extends TestCase {
             .toString());
 
     }
+
+
+    public void testGetBufferPool() throws IOException {
+        assertNull(bpool.getBufferAtOffset(0));
+        assertNull(bpool.getBufferAtOffset(1));
+        bpool.insert(bpool.getNewBufferAtOffset(access, 0));
+        assertFalse(null == bpool.getBufferAtOffset(0));
+        bpool.insert(bpool.getNewBufferAtOffset(access, 4));
+        bpool.insert(bpool.getNewBufferAtOffset(access, 7));
+
+        assertFalse(null == bpool.getBufferAtOffset(4));
+        assertFalse(null == bpool.getBufferAtOffset(7));
+    }
+
+
+    public void testGetBpRecord() throws IOException {
+        //assertEquals("Record: (8985, 26660)", bpool.getBpRecord(0).toString());
+//        assertEquals("Record: (21847, 25879)", bpool.getBpRecord(1).toString());
+//        assertEquals("Record: (24254, 26046)", bpool.getBpRecord(2).toString());
+//        assertEquals("Record: (8985, 26660)", bpool.getBpRecord(0).toString());
+    }
+    
 
 
     /**
@@ -74,7 +105,6 @@ public class BufferpoolTest extends TestCase {
         // System.out.print(rec[1].toString());
         // System.out.print(bpool.getRecord(1).toString());
         assertEquals(bpool.getBpRecord(1).toString(), rec[1].toString());
-        access.close();
         // ---------------test when full--------------------------------
 
     }
@@ -89,38 +119,39 @@ public class BufferpoolTest extends TestCase {
         byte[] bb = new byte[4096];
         access.read(bb);
         Record record = new Record(5, 5);
+        System.out.println(bpool.getBpRecord(2).toString());
         bpool.setRecord(2, record);
+        System.out.println(bpool.getBpRecord(2).toString());
+        byte[] b = bpool.getBufferAtOffset(0).toBuffarray();
+        System.out.println(b[10]);
         assertEquals(bpool.getBpRecord(2).toString(), record.toString());
-        
+
         Record record1 = new Record(70, 35);
         bpool.setRecord(2000, record1);
         assertEquals(bpool.getBpRecord(2000).toString(), record1.toString());
-        
+
         Record record2 = new Record(74, 38);
         bpool.setRecord(2000, record2);
         assertEquals(bpool.getBpRecord(2000).toString(), record2.toString());
     }
-    
-    
+
+
     public void testFlushAll() throws IOException {
         Buffer buffer = new Buffer(access, 0);
         bpool.insert(buffer);
-       
+
         Buffer buffer1 = new Buffer(access, 1);
         bpool.insert(buffer1);
-        
+
         Buffer buffer2 = new Buffer(access, 2);
         bpool.insert(buffer2);
-        
+
         Buffer buffer3 = new Buffer(access, 3);
         bpool.insert(buffer3);
-        
+
         bpool.flushall();
-        
+
         assertEquals(0, bpool.getlength());
     }
-    
-    
-    
 
 }

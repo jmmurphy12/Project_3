@@ -29,16 +29,6 @@ public class Buffer {
         dirtybit = false;
     }
     
-    
-    public void setBytes(int index, Record rec) {
-        int inBuffIndex = index % 1024;
-        byte[] b = rec.getBytes();
-        
-        for (int idex = 0; idex < 4; idex++) {
-            basicBuffer[inBuffIndex] = b[idex];
-        }
-    }
-
 
     public Record[] setRecordArray() {
         return Record.toRecArray(basicBuffer);
@@ -62,7 +52,7 @@ public class Buffer {
      */
     public Record getRecord(int index) throws IOException {
         if (inBuffer(index)) {
-            int bufferIndex = index % 1024;
+            int bufferIndex = (index % 1024);
             return records[bufferIndex];
         }
         else {
@@ -95,12 +85,17 @@ public class Buffer {
     }
 
 
+    public void makeDirty() {
+        dirtybit = true;
+    }
+
+
     /**
      * 
      * @return
      */
     public byte[] toBuffarray() {
-        return this.basicBuffer;
+        return basicBuffer;
     }
 
 

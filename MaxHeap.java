@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  * @author amado
  *
  */
-public class MaxHeap{
+public class MaxHeap {
     private int capacity; // Maximum size of the heap
     private int n; // Number of things currently in heap
     private BpInterface bpool;
@@ -29,8 +29,8 @@ public class MaxHeap{
     public MaxHeap(BpInterface pool, int heapSize, int capacity)
         throws NoSuchElementException,
         IOException {
-//        assert capacity <= pool.getlength() : "capacity is beyond array limits";
-//        assert heapSize <= capacity : "Heap size is beyond max";
+// assert capacity <= pool.getlength() : "capacity is beyond array limits";
+// assert heapSize <= capacity : "Heap size is beyond max";
         bpool = pool;
         n = heapSize;
         this.capacity = capacity;
@@ -215,10 +215,30 @@ public class MaxHeap{
     public void swap(int pos1, int pos2)
         throws NoSuchElementException,
         IOException {
-        Record Temp = bpool.getBpRecord(pos1);
-        Record Temp1 = bpool.getBpRecord(pos2);
-        bpool.setRecord(pos1, Temp1);
+
+        // System.out.println(bpool.getBpRecord(pos1).toString());
+        // System.out.println(bpool.getBpRecord(pos2).toString());
+        Record Temp = new Record(bpool.getBpRecord(pos1).getKey(), bpool
+            .getBpRecord(pos1).getValue());
+        Record Temp2 = new Record(bpool.getBpRecord(pos2).getKey(), bpool
+            .getBpRecord(pos2).getValue());
+
+        // System.out.println(Temp.toString());
+// if (bpool.getBpRecord(pos2).getKey() == 20085) {
+// System.out.println("p2: " + bpool.getBpRecord(pos2).getValue());
+// System.out.println("p1: " + bpool.getBpRecord(pos1).getValue());
+// }
+
+        bpool.setRecord(pos1, Temp2);
         bpool.setRecord(pos2, Temp);
+
+        // System.out.println("p2: " + bpool.getBpRecord(pos2).getKey() + ", " +
+        // bpool.getBpRecord(pos2).getValue());
+        //System.out.println("p1: " + bpool.getBpRecord(pos1).getKey() + ", "
+           // + bpool.getBpRecord(pos1).getValue());
+
+        // System.out.println(bpool.getBpRecord(pos1).toString());
+        // System.out.println(bpool.getBpRecord(pos2).toString());
 
     }
 

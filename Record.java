@@ -16,16 +16,7 @@ public class Record implements Comparable<Record> {
         bb = ByteBuffer.allocate(SIZE_IN_BYTES);
         bb.putShort(BYTE_INDEX_KEY, key);
         bb.putShort(BYTE_INDEX_VALUE, val);
-    }
-
-
-    public byte[] getBytes() {
-        byte[] bytes = new byte[4];
-        for (int idex = 0; idex < 4; idex++) {
-            bytes[idex] = bb.get(idex);
-        }
-
-        return bytes;
+        
     }
 
 
