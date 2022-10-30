@@ -17,20 +17,23 @@ public class MaxHeap {
     private int n; // Number of things currently in heap
     private BpInterface bpool;
 
-    // Constructor supporting preloading of heap contents
     /**
+     * Constructor supporting preloading of heap contents
      * 
-     * @param h
+     * @param pool
+     *            the buffer pool being used
      * @param heapSize
+     *            the amount of data that will be in the heap
      * @param capacity
-     * @throws IOException
+     *            the max number of data in the heap
      * @throws NoSuchElementException
+     *             if the element passed into the parameter doesn't exist
+     * @throws IOException
+     *             if a file error occursA
      */
     public MaxHeap(BpInterface pool, int heapSize, int capacity)
         throws NoSuchElementException,
         IOException {
-// assert capacity <= pool.getlength() : "capacity is beyond array limits";
-// assert heapSize <= capacity : "Heap size is beyond max";
         bpool = pool;
         n = heapSize;
         this.capacity = capacity;
@@ -38,74 +41,87 @@ public class MaxHeap {
     }
 
 
-    // Return position for left child of pos
     /**
+     * Return position for left child of pos
      * 
      * @param pos
+     *            the position of the parent
      * @return
+     *         the position of the left child
      */
     public static int leftChild(int pos) {
         return 2 * pos + 1;
     }
 
 
-    // Return position for right child of pos
     /**
+     * Return position for right child of pos
      * 
      * @param pos
+     *            the position of the parent
      * @return
+     *         the position of the right child
      */
     public static int rightChild(int pos) {
         return 2 * pos + 2;
     }
 
 
-    // Return position for the parent of pos
     /**
+     * Return position for the parent of pos
      * 
      * @param pos
+     *            the position of a child
      * @return
+     *         the position of the parent
      */
     public static int parent(int pos) {
         return (pos - 1) / 2;
     }
 
 
-    // Forcefully changes the heap size. May require build-heap afterwards
     /**
+     * Forcefully changes the heap size. May require build-heap afterwards
      * 
      * @param newSize
+     *            the new size of the heap
      */
     public void setHeapSize(int newSize) {
         n = newSize;
     }
 
 
-    // Return current size of the heap
     /**
+     * Return current size of the heap
      * 
      * @return
+     *         the heap size
      */
     public int heapSize() {
         return n;
     }
 
 
-    // Return true if pos a leaf position, false otherwise
     /**
+     * Return true if pos a leaf position, false otherwise
      * 
      * @param pos
+     *            the position of the "node"
      * @return
+     *         true if it is a leaf, false if not
      */
     public boolean isLeaf(int pos) {
         return (n / 2 <= pos) && (pos < n);
     }
 
 
-    // Organize contents of array to satisfy the heap structure
     /**
+     * Organize contents of array to satisfy the heap structure
+     * 
      * @throws IOException
+     *             if a file problem occurs
      * @throws NoSuchElementException
+     *             if an element doesn't exist
      * 
      */
     public void buildHeap() throws NoSuchElementException, IOException {
@@ -115,12 +131,15 @@ public class MaxHeap {
     }
 
 
-    // Moves an element down to its correct place
     /**
+     * Moves an element down to its correct place
      * 
      * @param pos
+     *            the position of the element being sifted down
      * @throws IOException
+     *             if a file error occurs
      * @throws NoSuchElementException
+     *             if an element doesn't exist
      */
     public void siftDown(int pos) throws NoSuchElementException, IOException {
         assert (0 <= pos && pos < n) : "Invalid heap position";
@@ -138,12 +157,15 @@ public class MaxHeap {
     }
 
 
-    // Moves an element up to its correct place
     /**
+     * Moves an element up to its correct place
      * 
      * @param pos
+     *            the position of the element being sifted up
      * @throws IOException
+     *             a file error occurs
      * @throws NoSuchElementException
+     *             an element doesn't exist
      */
     public void siftUp(int pos) throws NoSuchElementException, IOException {
         assert (0 <= pos && pos < n) : "Invalid heap position";
@@ -158,12 +180,15 @@ public class MaxHeap {
     }
 
 
-    // Remove and return maximum value
     /**
+     * Remove and return maximum value
      * 
      * @return
+     *         the record removed
      * @throws IOException
+     *             a file error occurs
      * @throws NoSuchElementException
+     *             an element doesn't exist
      */
     public Record removeMax() throws NoSuchElementException, IOException {
         assert n > 0 : "Heap is empty; cannot remove";
@@ -176,13 +201,17 @@ public class MaxHeap {
     }
 
 
-    // does fundamental comparison used for checking heap validity
     /**
+     * does fundamental comparison used for checking heap validity
      * 
      * @param pos1
+     *            the position of the first node being compared
      * @param pos2
+     *            the position of the second node being compared
      * @return
+     *         true if pos1 is greater than pos2, false if not
      * @throws IOException
+     *             a file error occurs
      */
     private boolean isGreaterThan(int pos1, int pos2) throws IOException {
         return bpool.getBpRecord(pos1).compareTo(bpool.getBpRecord(pos2)) > 0;
@@ -195,7 +224,9 @@ public class MaxHeap {
      * @param comp
      *            The objects we will be comparing to sort
      * @throws IOException
+     *             a file error occurs
      * @throws NoSuchElementException
+     *             an element doesn't exist
      */
     public void Sort() throws NoSuchElementException, IOException {
         for (int idex = 0; idex < capacity; idex++) {
@@ -206,39 +237,28 @@ public class MaxHeap {
 
 
     /**
+     * Swaps two elements in the file
      * 
      * @param pos1
+     *            the position of the first element
      * @param pos2
+     *            the position of the second element
      * @throws IOException
+     *             a file error occurs
      * @throws NoSuchElementException
+     *             an element doesn't exist
      */
     public void swap(int pos1, int pos2)
         throws NoSuchElementException,
         IOException {
 
-        // System.out.println(bpool.getBpRecord(pos1).toString());
-        // System.out.println(bpool.getBpRecord(pos2).toString());
         Record Temp = new Record(bpool.getBpRecord(pos1).getKey(), bpool
             .getBpRecord(pos1).getValue());
         Record Temp2 = new Record(bpool.getBpRecord(pos2).getKey(), bpool
             .getBpRecord(pos2).getValue());
 
-        // System.out.println(Temp.toString());
-// if (bpool.getBpRecord(pos2).getKey() == 20085) {
-// System.out.println("p2: " + bpool.getBpRecord(pos2).getValue());
-// System.out.println("p1: " + bpool.getBpRecord(pos1).getValue());
-// }
-
         bpool.setRecord(pos1, Temp2);
         bpool.setRecord(pos2, Temp);
-
-        // System.out.println("p2: " + bpool.getBpRecord(pos2).getKey() + ", " +
-        // bpool.getBpRecord(pos2).getValue());
-        //System.out.println("p1: " + bpool.getBpRecord(pos1).getKey() + ", "
-           // + bpool.getBpRecord(pos1).getValue());
-
-        // System.out.println(bpool.getBpRecord(pos1).toString());
-        // System.out.println(bpool.getBpRecord(pos2).toString());
 
     }
 

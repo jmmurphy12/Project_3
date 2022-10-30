@@ -4,15 +4,21 @@ import java.io.RandomAccessFile;
 import student.TestCase;
 
 /**
+ * Tests the BufferPool class
  * 
- * @author amado
- *
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
  */
 public class BufferpoolTest extends TestCase {
     private ByteFile file;
     private RandomAccessFile access;
     private BufferPool bpool;
 
+    /**
+     * The set up for the test class
+     */
     public void setUp() throws IOException {
         file = new ByteFile("sampleblock1", 3);
         file.writeRandomRecords();
@@ -21,20 +27,26 @@ public class BufferpoolTest extends TestCase {
     }
 
 
+    /**
+     * Tests if input into the file is correct
+     * 
+     * @throws IOException
+     *             if a file error occurs
+     */
     public void testCorrectInput() throws IOException {
-//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(0));
-//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(1));
-//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(2));
-//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(3));
-//        System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(4));
+// System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(0));
+// System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(1));
+// System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(2));
+// System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(3));
+// System.out.println(bpool.getNewBufferAtOffset(access, 0).getRecord(4));
     }
 
 
     /**
-     * 
      * Test the getBufferatoffset method
      * 
      * @throws IOException
+     *             if a file error occurs
      */
     public void testGetRecords() throws IOException {
         byte[] stuff = new byte[12288];
@@ -50,6 +62,12 @@ public class BufferpoolTest extends TestCase {
     }
 
 
+    /**
+     * Tests if the GetBufferPool method behaves properly
+     * 
+     * @throws IOException
+     *             if a file error occurs
+     */
     public void testGetBufferPool() throws IOException {
         assertNull(bpool.getBufferAtOffset(0));
         assertNull(bpool.getBufferAtOffset(1));
@@ -63,19 +81,29 @@ public class BufferpoolTest extends TestCase {
     }
 
 
+    /**
+     * Tests if the GetBpRecord behaves properly
+     * 
+     * @throws IOException
+     *             if a file error occurs
+     */
     public void testGetBpRecord() throws IOException {
-        //assertEquals("Record: (8985, 26660)", bpool.getBpRecord(0).toString());
-//        assertEquals("Record: (21847, 25879)", bpool.getBpRecord(1).toString());
-//        assertEquals("Record: (24254, 26046)", bpool.getBpRecord(2).toString());
-//        assertEquals("Record: (8985, 26660)", bpool.getBpRecord(0).toString());
+        // assertEquals("Record: (8985, 26660)",
+        // bpool.getBpRecord(0).toString());
+        // assertEquals("Record: (21847, 25879)",
+        // bpool.getBpRecord(1).toString());
+        // assertEquals("Record: (24254, 26046)",
+        // bpool.getBpRecord(2).toString());
+        // assertEquals("Record: (8985, 26660)",
+        // bpool.getBpRecord(0).toString());
     }
-    
 
 
     /**
      * test the insert method
      * 
      * @throws IOException
+     *             if a file error occurs
      */
     public void testinsert() throws IOException {
         Buffer buffer = new Buffer(access, 0);
@@ -97,6 +125,7 @@ public class BufferpoolTest extends TestCase {
      * test the get record method
      * 
      * @throws IOException
+     *             if a file error occurs
      */
     public void testgetRecord() throws IOException {
         byte[] bb = new byte[4096];
@@ -114,6 +143,7 @@ public class BufferpoolTest extends TestCase {
      * Test the setRecord method
      * 
      * @throws IOException
+     *             if a file error occurs
      */
     public void testSetRecord() throws IOException {
         byte[] bb = new byte[4096];
@@ -136,6 +166,12 @@ public class BufferpoolTest extends TestCase {
     }
 
 
+    /**
+     * Tests if the flushAll method behaves properly
+     * 
+     * @throws IOException
+     *             if a file error occurs
+     */
     public void testFlushAll() throws IOException {
         Buffer buffer = new Buffer(access, 0);
         bpool.insert(buffer);

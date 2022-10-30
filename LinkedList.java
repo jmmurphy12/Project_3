@@ -65,27 +65,6 @@ public class LinkedList<E> {
         return true;
     }
 
-//
-// /**
-// * The insert method for the linked list
-// *
-// * @param it
-// * the element to insert
-// * @return a boolean depending on the insert value
-// *
-// */
-// public boolean search(E it) {
-// moveToStart();
-// boolean flag = false;
-// while ((curr != null) && (it != null)) {
-// if (this.getValue() == it) {
-// flag = true;
-// }
-// }
-// return flag;
-// }
-//
-
 
     /**
      * The getter head method for the linked list
@@ -169,7 +148,7 @@ public class LinkedList<E> {
 
 
     /**
-     * The removelast method removes the last nodes
+     * Removes the last nodes
      */
     public E removelast() {
         moveToPos(listSize - 1);
@@ -199,7 +178,7 @@ public class LinkedList<E> {
 
 
     /**
-     * 
+     * Moves most recently used data to the front
      */
     public void LRU(E element) {
         moveToStart();

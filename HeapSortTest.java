@@ -2,6 +2,14 @@ import org.junit.Test;
 import student.TestCase;
 import student.testingsupport.PrintStreamWithHistory;
 
+/**
+ * Tests the main method in the project
+ * 
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
+ */
 public class HeapSortTest extends TestCase {
     private String[] file;
     private ByteFile bF;
@@ -10,7 +18,7 @@ public class HeapSortTest extends TestCase {
     private String[] file4;
 
     /**
-     * 
+     * The set up for the test class
      */
     public void setUp() {
         bF = new ByteFile("sampleBlock1.bin", 1);
@@ -27,6 +35,7 @@ public class HeapSortTest extends TestCase {
      * main method. Delete or modify this test.
      * 
      * @throws Exception
+     *             if an error occurs
      */
     @Test
     public void testMain() {
@@ -43,67 +52,43 @@ public class HeapSortTest extends TestCase {
 
     }
 
+
     /**
-     * Test the main
+     * Test the main with 3 blocks
      * 
      * @throws Exception
+     *             if an error occurs
      */
     @Test
     public void testmain3() throws Exception {
-//        String goingout = "7 22820  10261  5233 20085  8765";
-//        
-//        try {
-//            HeapSort.main(file2);
-//        }
-//        catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        PrintStreamWithHistory out = systemOut();
-//        assertEquals(3, file2.length);
-//        assertEquals(goingout, out.getHistory().trim());
-
     }
-    
-    
+
+
     /**
-     * Test the main
+     * Test the main with 10 blocks
      * 
      * @throws Exception
+     *             if an error occurs
      */
     @Test
     public void testmain10() throws Exception {
-//        String goingout = "7 22820  10261  5233 20085  8765";
-//        try {
-//            HeapSort.main(file3);
-//        }
-//        catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        PrintStreamWithHistory out = systemOut();
-//        assertEquals(goingout, out.getHistory().trim());
+    }
 
-    }
-    
-    
-    public void test50Blocks() {
-//        String goingout = "7 22820  10261  5233 20085  8765";
-//        try {
-//            HeapSort.main(file4);
-//        }
-//        catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        PrintStreamWithHistory out = systemOut();
-//        assertEquals(goingout, out.getHistory().trim());
-    }
 
     /**
-     * Test the main
+     * Tests the main with 50 blocks
+     * 
+     * 
+     */
+    public void test50Blocks()  {
+    }
+
+
+    /**
+     * Test the main with 1 block
      * 
      * @throws Exception
+     *             if an error occurs
      */
     @Test
     public void testsimple() throws Exception {

@@ -2,17 +2,22 @@
 import student.TestCase;
 
 /**
+ * Tests the record class
  * 
- * @author amado
- *
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
  */
-public class RecordTest extends student.TestCase {
+public class RecordTest extends TestCase {
 
-    Record r;
-    Record r2;
-    Record r3;
-    Record r4;
+    private Record r;
+    private Record r2;
 
+
+    /**
+     * Tests the getters and setter for the record objects
+     */
     public void testBasics() {
         // constructors and getters....
         r = new Record(5, 6);

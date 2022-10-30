@@ -1,3 +1,4 @@
+
 /**
  * Basic handling of binary data files.
  * Uses a single byte array as a buffer for disc operations
@@ -14,24 +15,64 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 import student.TestableRandom;
 
+/**
+ * Used for testing byte file behavior
+ * 
+ * @author TAs or Professor
+ * @version 2022.10.30
+ * 
+ */
 public class ByteFile {
 
-    File theFile;
-    int numBlocks;
-    public long seed;
+    /**
+     * The byte file being tested
+     */
+    private File theFile;
 
-    public static int RECORDS_PER_BLOCK = 1024;
-    public static int BYTES_PER_BLOCK = RECORDS_PER_BLOCK
+    /**
+     * The number of blocks (4096 bytes) in the file
+     */
+    private int numBlocks;
+
+    /**
+     * the seed for the byte file
+     */
+    private long seed;
+
+    /**
+     * The number of records per block
+     */
+    private static int RECORDS_PER_BLOCK = 1024;
+
+    /**
+     * The number of bytes in each block of data
+     */
+    private static int BYTES_PER_BLOCK = RECORDS_PER_BLOCK
         * Record.SIZE_IN_BYTES; // 4096
 
-    public ByteFile(String filename, int numBlocks){
+    /**
+     * The constructor for the byte file
+     * 
+     * @param filename
+     *            the name of the byte file
+     * @param numBlocks
+     *            the number of blocks of data
+     */
+    public ByteFile(String filename, int numBlocks) {
         theFile = new File(filename);
         this.numBlocks = numBlocks;
         this.seed = -1;
     }
 
 
-    // checks if a file of records is sorted or not
+    /**
+     * checks if a file of records is sorted or not
+     * 
+     * @return
+     *         true if the byte file is sorted, false if not
+     * @throws IOException
+     *             if a file error occurs
+     */
     public boolean isSorted() throws IOException {
         byte[] basicBuffer = new byte[BYTES_PER_BLOCK];
 
@@ -61,9 +102,14 @@ public class ByteFile {
         }
         return true;
     }
-    
-    
-    // creates a file of randomly generated records
+
+
+    /**
+     * creates a file of randomly generated records
+     * 
+     * @throws IOException
+     *             if a file error occurs
+     */
     public void writeRandomRecords() throws IOException {
         Random rng = new TestableRandom();
         if (seed != -1) {
@@ -72,7 +118,7 @@ public class ByteFile {
 
         byte[] basicBuffer = new byte[BYTES_PER_BLOCK];
         ByteBuffer bb = ByteBuffer.wrap(basicBuffer);
-        
+
         theFile.delete();
         // Deletes whatever content was there! This is important for if
         // you try using a file that already has lots of data, and you
