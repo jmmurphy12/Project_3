@@ -44,7 +44,6 @@ public class HeapSortTest extends TestCase {
             HeapSort.main(file);
         }
         catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         PrintStreamWithHistory out = systemOut();
@@ -92,10 +91,8 @@ public class HeapSortTest extends TestCase {
      */
     @Test
     public void testsimple() throws Exception {
-        String[] file = new String[] { "sampleBlock1.bin", "1",
-            "sampleoutput" };
         HeapSort.main(file);
-        ByteFile bF = new ByteFile("sampleBlock1.bin", 1);
+        bF = new ByteFile("sampleBlock1.bin", 1);
         assertTrue(bF.isSorted());
 
     }

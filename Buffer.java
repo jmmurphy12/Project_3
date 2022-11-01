@@ -19,9 +19,9 @@ public class Buffer {
     /**
      * The constructor for the buffer class
      * 
-     * @param fileUsed
+     * @param file
      *            the file where the data is coming from
-     * @param offset
+     * @param offsetVal
      *            the block number of the buffer
      * @throws IOException
      *             if a file error occurs

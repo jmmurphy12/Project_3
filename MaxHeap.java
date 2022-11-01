@@ -7,10 +7,14 @@ import java.util.NoSuchElementException;
 
 // Many of these methods are not going to be useful for ExternalSorting...
 // Prune those methods out if you don't want to test them.
+
 /**
+ * Creates the heap data structure
  * 
- * @author amado
- *
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
  */
 public class MaxHeap {
     private int capacity; // Maximum size of the heap
@@ -221,14 +225,12 @@ public class MaxHeap {
     /**
      * The sort method in the heap
      * 
-     * @param comp
-     *            The objects we will be comparing to sort
      * @throws IOException
      *             a file error occurs
      * @throws NoSuchElementException
      *             an element doesn't exist
      */
-    public void Sort() throws NoSuchElementException, IOException {
+    public void sort() throws NoSuchElementException, IOException {
         for (int idex = 0; idex < capacity; idex++) {
             removeMax();
         }
@@ -252,13 +254,13 @@ public class MaxHeap {
         throws NoSuchElementException,
         IOException {
 
-        Record Temp = new Record(bpool.getBpRecord(pos1).getKey(), bpool
+        Record temp = new Record(bpool.getBpRecord(pos1).getKey(), bpool
             .getBpRecord(pos1).getValue());
-        Record Temp2 = new Record(bpool.getBpRecord(pos2).getKey(), bpool
+        Record temp2 = new Record(bpool.getBpRecord(pos2).getKey(), bpool
             .getBpRecord(pos2).getValue());
 
-        bpool.setRecord(pos1, Temp2);
-        bpool.setRecord(pos2, Temp);
+        bpool.setRecord(pos1, temp2);
+        bpool.setRecord(pos2, temp);
 
     }
 

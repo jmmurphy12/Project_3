@@ -1,11 +1,15 @@
 import java.util.NoSuchElementException;
+import student.TestCase;
 
 /**
+ * Tests the LinkedList class
  * 
- * @author amado
- *
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
  */
-public class LinkedListTest extends student.TestCase {
+public class LinkedListTest extends TestCase {
     private LinkedList<String> list;
 
     /**

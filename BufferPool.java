@@ -23,8 +23,11 @@ public class BufferPool implements BpInterface {
      * The constructor for the buffer pool class
      * 
      * @param access
+     *            the file being used
      * @param numberofbuff
+     *            the max number of buffers allowed in the buffer pool
      * @throws IOException
+     *             if an error occurs
      */
     public BufferPool(RandomAccessFile access, int numberofbuff)
         throws IOException {
@@ -66,7 +69,10 @@ public class BufferPool implements BpInterface {
      * else insert the buffer into the buffer pool
      * if the record equals the buffer
      * 
+     * @param b
+     *            the buffer being inserted into the buffer pool
      * @throws IOException
+     *             if an error occurs
      * 
      */
     public void insert(Buffer b) throws IOException {
@@ -120,7 +126,7 @@ public class BufferPool implements BpInterface {
             cachehits++;
         }
 
-        list.LRU(getBufferAtOffset(offsetValue));
+        list.lRU(getBufferAtOffset(offsetValue));
         return getBufferAtOffset(offsetValue).getRecord(indx);
     }
 
@@ -140,11 +146,8 @@ public class BufferPool implements BpInterface {
     /**
      * Writes buffer back to the file
      * 
-     * @param file
-     *            the file being written to
      * @throws IOException
-     *             if a file error occurs
-     * 
+     *             if an error occurs
      */
     public void flush() throws IOException {
         diskWrites++;
@@ -170,9 +173,13 @@ public class BufferPool implements BpInterface {
     /**
      * A setter method in the buffer pool for the records
      * 
-     * @param rec
+     * @param record
      *            The record that is passed to the method
+     * 
+     * @param index
+     *            the location of where the record will be set
      * @throws IOException
+     *             if an error occurs
      */
     public void setRecord(int index, Record record) throws IOException {
         int offsetValue = index / 1024;
@@ -185,7 +192,7 @@ public class BufferPool implements BpInterface {
         }
 
         getBufferAtOffset(offsetValue).getRecord(index).setTo(record);
-        list.LRU(getBufferAtOffset(offsetValue));
+        list.lRU(getBufferAtOffset(offsetValue));
         getBufferAtOffset(offsetValue).makeDirty();
 
     }

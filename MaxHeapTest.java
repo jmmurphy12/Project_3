@@ -1,10 +1,16 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.NoSuchElementException;
 import student.TestCase;
 
+/**
+ * Tests the MaxHeap class
+ * 
+ * @author Amado Jain
+ * @author Josh Murphy
+ * @version 2022.10.30
+ * 
+ */
 public class MaxHeapTest extends TestCase {
     private ImBufferPool fakeBuf;
     private BufferPool rBuff;
@@ -14,6 +20,9 @@ public class MaxHeapTest extends TestCase {
     private int fileLength;
     private MaxHeap testRealHeap;
 
+    /**
+     * The set up for the test class
+     */
     public void setUp() throws NoSuchElementException, IOException {
 
         fakeBuf = new ImBufferPool(5);
@@ -43,20 +52,36 @@ public class MaxHeapTest extends TestCase {
     }
 
 
+    /**
+     * Tests the heap with the use of a fake buffer pool
+     * 
+     * @throws NoSuchElementException
+     *             if an element doesn't exist
+     * @throws IOException
+     *             if an error occurs
+     */
     public void testFakeHeap() throws NoSuchElementException, IOException {
         System.out.println(fakeBuf.toString());
         testFakeHeap.buildHeap();
         System.out.println(fakeBuf.toString());
-        testFakeHeap.Sort();
+        testFakeHeap.sort();
         System.out.println(fakeBuf.toString());
         MaxHeap testHeap = new MaxHeap(fakeBuf, 5, 5);
         System.out.println(fakeBuf.toString());
-        testHeap.Sort();
+        testHeap.sort();
         System.out.println(fakeBuf.toString());
 
     }
 
 
+    /**
+     * Tests the heap with another fake buffer pool
+     * 
+     * @throws NoSuchElementException
+     *             if an element doesn't exist
+     * @throws IOException
+     *             an error occurs
+     */
     public void testFakeHeap2() throws NoSuchElementException, IOException {
         Record tr1 = new Record(8985, 26660);
         Record tr2 = new Record(21847, 25879);
@@ -75,15 +100,23 @@ public class MaxHeapTest extends TestCase {
         System.out.println(fakeBuf1.toString());
         testFakeHeap.buildHeap();
         System.out.println(fakeBuf1.toString());
-        testFakeHeap.Sort();
+        testFakeHeap.sort();
         System.out.println(fakeBuf1.toString());
 
     }
 
 
+    /**
+     * Tests the heap with a real buffer pool
+     * 
+     * @throws NoSuchElementException
+     *             if an element doesn't exist
+     * @throws IOException
+     *             if an error occurs
+     */
     public void testRealHeap() throws NoSuchElementException, IOException {
         testRealHeap.buildHeap();
-        testRealHeap.Sort();
+        testRealHeap.sort();
         rBuff.flushall();
         assertTrue(byteF.isSorted());
 

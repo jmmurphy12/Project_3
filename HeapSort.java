@@ -41,7 +41,7 @@ public class HeapSort {
         long start = System.currentTimeMillis();
 
         if (!bf.isSorted()) {
-            max.Sort();
+            max.sort();
             bp.flushall();
         }
 

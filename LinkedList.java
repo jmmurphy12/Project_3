@@ -149,6 +149,9 @@ public class LinkedList<E> {
 
     /**
      * Removes the last nodes
+     * 
+     * @return
+     *         the last element being removed
      */
     public E removelast() {
         moveToPos(listSize - 1);
@@ -179,8 +182,11 @@ public class LinkedList<E> {
 
     /**
      * Moves most recently used data to the front
+     * 
+     * @param element
+     *            the element being moved to the front
      */
-    public void LRU(E element) {
+    public void lRU(E element) {
         moveToStart();
         while (curr != null) {
             if (curr.element().equals(element)) {

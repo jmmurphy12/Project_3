@@ -157,6 +157,9 @@ public class Record implements Comparable<Record> {
 
     /**
      * A nice overview of the Record's contents.
+     * 
+     * @return
+     *         the string
      */
     public String toString() {
         StringBuilder sb = new StringBuilder("Record: (");

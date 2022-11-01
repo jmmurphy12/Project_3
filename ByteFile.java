@@ -42,12 +42,12 @@ public class ByteFile {
     /**
      * The number of records per block
      */
-    private static int RECORDS_PER_BLOCK = 1024;
+    private static final int RECORDS_PER_BLOCK = 1024;
 
     /**
      * The number of bytes in each block of data
      */
-    private static int BYTES_PER_BLOCK = RECORDS_PER_BLOCK
+    private static final int BYTES_PER_BLOCK = RECORDS_PER_BLOCK
         * Record.SIZE_IN_BYTES; // 4096
 
     /**
